@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58296d03-fbdb-4925-afa5-a2b7f95a9cd4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ApplicationService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ApplicationService/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="58296d03-fbdb-4925-afa5-a2b7f95a9cd4" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,6 +31,10 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "D:/junior/3-2/sda/final/labproject",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -44,7 +46,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1756628867396</updated>
-      <workItem from="1756639526651" duration="259000" />
+      <workItem from="1756639526651" duration="634000" />
     </task>
     <servers />
   </component>
