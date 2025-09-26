@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,9 @@ public class ApplicationController {
 
     @Autowired
     private ApplicationService applicationService;
+
+    @Autowired
+    private RestTemplate restTemplate; // Add this injection
 
     @PostMapping
     public ResponseEntity<?> createApplication(@RequestBody JobApplication application) {
@@ -176,6 +180,49 @@ public class ApplicationController {
         }
     }
 
+    // Diagnostic endpoints
+    @GetMapping("/debug/user/{userId}")
+    public ResponseEntity<?> debugUserCheck(@PathVariable String userId) {
+        try {
+            String url = "http://UserService/api/users/" + userId;
+            Object userResponse = restTemplate.getForObject(url, Object.class);
+            return ResponseEntity.ok().body(new DebugResponse("SUCCESS", "User found", userResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new DebugResponse("ERROR", "User check failed: " + e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/debug/job/{jobId}")
+    public ResponseEntity<?> debugJobCheck(@PathVariable String jobId) {
+        try {
+            String url = "http://JobService/api/jobs/" + jobId;
+            Object jobResponse = restTemplate.getForObject(url, Object.class);
+            return ResponseEntity.ok().body(new DebugResponse("SUCCESS", "Job found", jobResponse));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new DebugResponse("ERROR", "Job check failed: " + e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/debug/services")
+    public ResponseEntity<?> debugServices() {
+        try {
+            // Test User Service
+            String userServiceUrl = "http://UserService/api/users";
+            restTemplate.getForObject(userServiceUrl, Object.class);
+
+            // Test Job Service
+            String jobServiceUrl = "http://JobService/api/jobs";
+            restTemplate.getForObject(jobServiceUrl, Object.class);
+
+            return ResponseEntity.ok().body(new DebugResponse("SUCCESS", "All services are reachable", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(new DebugResponse("ERROR", "Service connectivity issue: " + e.getMessage(), null));
+        }
+    }
+
     // Helper methods
     private ErrorResponse createErrorResponse(String error, String message) {
         return new ErrorResponse(error, message);
@@ -213,5 +260,21 @@ public class ApplicationController {
         }
 
         public boolean isCanApply() { return canApply; }
+    }
+
+    private static class DebugResponse {
+        private final String status;
+        private final String message;
+        private final Object data;
+
+        public DebugResponse(String status, String message, Object data) {
+            this.status = status;
+            this.message = message;
+            this.data = data;
+        }
+
+        public String getStatus() { return status; }
+        public String getMessage() { return message; }
+        public Object getData() { return data; }
     }
 }
