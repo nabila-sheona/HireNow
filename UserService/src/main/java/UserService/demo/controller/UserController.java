@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import UserService.demo.service.EmailAlreadyExistsException;
 import org.springframework.dao.DuplicateKeyException;
+import UserService.demo.service.PasswordStrengthException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,6 +45,9 @@ public class UserController {
         }
         try {
             return ResponseEntity.ok(userService.createUser(user));
+        } catch (PasswordStrengthException e) {
+            errors.put("password", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         } catch (EmailAlreadyExistsException e) {
             errors.put("email", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
@@ -91,6 +95,9 @@ public class UserController {
         try {
             User updatedUser = userService.updateUser(id, userDetails);
             return ResponseEntity.ok(updatedUser);
+        } catch (PasswordStrengthException e) {
+            errors.put("password", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         } catch (EmailAlreadyExistsException e) {
             errors.put("email", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);

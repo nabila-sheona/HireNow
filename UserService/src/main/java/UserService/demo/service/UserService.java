@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import UserService.demo.service.PasswordStrengthException;
 
 @Service
 public class UserService {
@@ -18,6 +19,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private void validatePasswordStrength(String password) {
+        if (password == null || password.length() < 8) {
+            throw new PasswordStrengthException("Password is too weak: must be at least 8 characters");
+        }
+        if (password.length() > 64) {
+            throw new PasswordStrengthException("Password is too strong: must be at most 64 characters");
+        }
+        // Require at least one uppercase, one lowercase, one digit, one special character
+        if (!password.matches(".*[A-Z].*")) {
+            throw new PasswordStrengthException("Password must contain at least one uppercase letter");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new PasswordStrengthException("Password must contain at least one lowercase letter");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            throw new PasswordStrengthException("Password must contain at least one digit");
+        }
+        if (!password.matches(".*[^a-zA-Z0-9].*")) {
+            throw new PasswordStrengthException("Password must contain at least one special character");
+        }
+    }
+
     public User createUser(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new DuplicateKeyException("Username already exists");
@@ -25,6 +48,7 @@ public class UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
+        validatePasswordStrength(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -56,6 +80,7 @@ public class UserService {
         user.setCompanyName(userDetails.getCompanyName());
         // Only update password if a new one is provided
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            validatePasswordStrength(userDetails.getPassword());
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         }
         return userRepository.save(user);
