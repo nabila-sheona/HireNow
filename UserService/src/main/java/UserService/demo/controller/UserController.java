@@ -17,6 +17,8 @@ import UserService.demo.service.EmailAlreadyExistsException;
 import org.springframework.dao.DuplicateKeyException;
 import UserService.demo.service.PasswordStrengthException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import UserService.demo.util.JwtUtil;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,6 +26,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
@@ -58,6 +64,26 @@ public class UserController {
             errors.put("username", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String username = loginRequest.get("username");
+        String password = loginRequest.get("password");
+        Optional<User> userOpt = userService.getUserByUsername(username);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+        User user = userOpt.get();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+        // For simplicity, use the first role if multiple
+        String role = user.getRoles().stream().findFirst().orElse("");
+        String token = jwtUtil.generateToken(user.getUsername(), role);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
