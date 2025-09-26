@@ -20,7 +20,6 @@ public class Job {
     private String hirerId;
     private LocalDateTime postedDate;
 
-    // Constructors
     public Job() {
         this.postedDate = LocalDateTime.now();
     }
@@ -40,7 +39,6 @@ public class Job {
         this.postedDate = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getCompanyName() { return companyName; }

@@ -28,7 +28,6 @@ public class UserService {
         if (password.length() > 64) {
             throw new PasswordStrengthException("Password is too strong: must be at most 64 characters");
         }
-        // Require at least one uppercase, one lowercase, one digit, one special character
         if (!password.matches(".*[A-Z].*")) {
             throw new PasswordStrengthException("Password must contain at least one uppercase letter");
         }
@@ -52,7 +51,6 @@ public class UserService {
         }
         validatePasswordStrength(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        // Assign default role if none provided
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             Set<String> defaultRoles = new HashSet<>();
             defaultRoles.add("JOB_SEEKER");
@@ -85,12 +83,10 @@ public class UserService {
         user.setEmail(userDetails.getEmail());
         user.setPhone(userDetails.getPhone());
         user.setCompanyName(userDetails.getCompanyName());
-        // Only update password if a new one is provided
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
             validatePasswordStrength(userDetails.getPassword());
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         }
-        // Update roles if provided
         if (userDetails.getRoles() != null && !userDetails.getRoles().isEmpty()) {
             user.setRoles(userDetails.getRoles());
         }

@@ -24,7 +24,7 @@ public class User {
     private String phone;
     private String companyName;
 
-    // Constructors
+    
     public User() {}
 
     public User(String username, String email, String password, Set<String> roles, String phone, String companyName) {
@@ -36,7 +36,6 @@ public class User {
         this.companyName = companyName;
     }
 
-    // Getters and Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getUsername() { return username; }

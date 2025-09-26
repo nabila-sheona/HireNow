@@ -21,7 +21,6 @@ public class ApplicationController {
     @Autowired
     private RestTemplate restTemplate;
 
-    // Existing endpoints with sorting support
     @GetMapping
     public ResponseEntity<List<JobApplication>> getAllApplications(
             @RequestParam(required = false) String sortBy,
@@ -129,7 +128,6 @@ public class ApplicationController {
         }
     }
 
-    // New endpoints for skills, experience, degree, and status-based sorting
     @GetMapping("/skill/{skill}")
     public ResponseEntity<?> getApplicationsBySkill(
             @PathVariable String skill,
@@ -229,7 +227,6 @@ public class ApplicationController {
         }
     }
 
-    // Existing endpoints (unchanged)
     @PostMapping
     public ResponseEntity<?> createApplication(@RequestBody JobApplication application) {
         try {
@@ -288,7 +285,6 @@ public class ApplicationController {
         }
     }
 
-    // Additional endpoints for business logic
     @GetMapping("/job/{jobId}/count")
     public ResponseEntity<?> getApplicationCountForJob(@PathVariable String jobId) {
         try {

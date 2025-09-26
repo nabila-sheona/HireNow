@@ -23,7 +23,6 @@ public class JobService {
     @Autowired
     private RestTemplate restTemplate;
 
-    // === EXISTING METHODS ===
     public Job createJob(Job job) {
         validateHirer(job.getHirerId());
         validateJobData(job);
@@ -162,7 +161,6 @@ public class JobService {
                 "HYBRID".equalsIgnoreCase(preference);
     }
 
-    // === NEW SEARCH AND SORT METHODS ===
     public List<Job> searchJobsByKeyword(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             throw new IllegalArgumentException("Search keyword cannot be null or empty");
