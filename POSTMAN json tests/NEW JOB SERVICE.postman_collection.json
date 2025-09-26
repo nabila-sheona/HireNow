@@ -1,0 +1,651 @@
+{
+	"info": {
+		"_postman_id": "55344ae6-767c-4750-924e-3fb3291fed13",
+		"name": "NEW JOB SERVICE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33961185",
+		"_collection_link": "https://serverlabfinal.postman.co/workspace/HireNow~7741fc77-4704-4c01-87e9-a744d33521d5/collection/33961185-55344ae6-767c-4750-924e-3fb3291fed13?action=share&source=collection_link&creator=33961185"
+	},
+	"item": [
+		{
+			"name": "Create Job - Success",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Acme Corp\",\r\n  \"jobTitle\": \"Backend Developer\",\r\n  \"expectedSalary\": 1500,\r\n  \"preference\": \"REMOTE\",\r\n  \"requiredSkills\": [\"Java\", \"Spring Boot\"],\r\n  \"experience\": \"2 years\",\r\n  \"workingHours\": \"9-5\",\r\n  \"prerequisites\": \"Portfolio\",\r\n  \"hirerId\": \"68d6c94d4e13e877f248fb16\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job — User Role Forbidden ( seeker)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"companyName\": \"\",\r\n    \"jobTitle\": \"\",\r\n    \"expectedSalary\": 0,\r\n    \"preference\": \"INVALID\",\r\n    \"requiredSkills\": [],\r\n    \"experience\": \"\",\r\n    \"workingHours\": \"\",\r\n    \"hirerId\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8082/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Remote Job",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"RemoteTech Inc.\",\r\n  \"jobTitle\": \"Frontend Developer\",\r\n  \"expectedSalary\": 80000,\r\n  \"preference\": \"REMOTE\",\r\n  \"requiredSkills\": [\"React\", \"JavaScript\", \"CSS\", \"HTML5\"],\r\n  \"experience\": \"3+ years\",\r\n  \"workingHours\": \"Flexible\",\r\n  \"prerequisites\": \"Portfolio required\",\r\n  \"hirerId\": \"68b4470430a3c93c1bbdc270\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job with Job Seeker (Error Case - Wrong Role)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Unauthorized Company\",\r\n  \"jobTitle\": \"Some Job\",\r\n  \"expectedSalary\": 50000,\r\n  \"preference\": \"ONSITE\",\r\n  \"requiredSkills\": [\"Some Skill\"],\r\n  \"experience\": \"1 year\",\r\n  \"workingHours\": \"9-5\",\r\n  \"prerequisites\": \"None\",\r\n  \"hirerId\": \"68b446a730a3c93c1bbdc26f\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job with Non-Existent User (Error Case)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Ghost Company\",\r\n  \"jobTitle\": \"Ghost Job\",\r\n  \"expectedSalary\": 50000,\r\n  \"preference\": \"ONSITE\",\r\n  \"requiredSkills\": [\"Ghost Skill\"],\r\n  \"experience\": \"1 year\",\r\n  \"workingHours\": \"9-5\",\r\n  \"prerequisites\": \"None\",\r\n  \"hirerId\": \"non_existent_user_id_123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job with Invalid Data (Error Case)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"\",\r\n  \"jobTitle\": \"\",\r\n  \"expectedSalary\": -100,\r\n  \"preference\": \"INVALID_TYPE\",\r\n  \"requiredSkills\": [],\r\n  \"experience\": \"\",\r\n  \"workingHours\": \"\",\r\n  \"prerequisites\": \"\",\r\n  \"hirerId\": \"{{validHirerId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job with Missing Hirer ID (Error Case)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Some Company\",\r\n  \"jobTitle\": \"Some Job\",\r\n  \"expectedSalary\": 50000,\r\n  \"preference\": \"ONSITE\",\r\n  \"requiredSkills\": [\"Skill1\"],\r\n  \"experience\": \"1 year\",\r\n  \"workingHours\": \"9-5\",\r\n  \"prerequisites\": \"None\",\r\n  \"hirerId\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Jobs (Success Case)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job by ID (Success Case)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/68d6e671284ecb6a96d3c389",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"68d6e671284ecb6a96d3c389"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job by Invalid ID (Error Case)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/invalid_id_123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"invalid_id_123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Jobs by Hirer (Success Case)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/hirer/68b446a730a3c93c1bbdc26f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"hirer",
+						"68b446a730a3c93c1bbdc26f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Jobs with Empty Query (Error Case)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/search/company?companyName=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"search",
+						"company"
+					],
+					"query": [
+						{
+							"key": "companyName",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job (Success Case)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Tech Solutions Ltd. Updated\",\r\n  \"jobTitle\": \"Lead Java Developer\",\r\n  \"expectedSalary\": 140000,\r\n  \"preference\": \"HYBRID\",\r\n  \"requiredSkills\": [\"Java\", \"Spring Boot\", \"Microservices\", \"MongoDB\", \"Docker\"],\r\n  \"experience\": \"7+ years\",\r\n  \"workingHours\": \"9 AM - 5 PM\",\r\n  \"prerequisites\": \"Computer Science degree required\",\r\n  \"hirerId\": \"68d6c94d4e13e877f248fb16\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/68d6e671284ecb6a96d3c389",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"68d6e671284ecb6a96d3c389"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Non-Existent Job (Error Case)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"companyName\": \"Some Company\",\r\n  \"jobTitle\": \"Some Job\",\r\n  \"expectedSalary\": 50000,\r\n  \"preference\": \"ONSITE\",\r\n  \"requiredSkills\": [\"Skill1\"],\r\n  \"experience\": \"1 year\",\r\n  \"workingHours\": \"9-5\",\r\n  \"prerequisites\": \"None\",\r\n  \"hirerId\": \"{{validHirerId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/non_existent_job_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"non_existent_job_id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job (Success Case)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/68d6e7d8284ecb6a96d3c38a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"68d6e7d8284ecb6a96d3c38a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Non-Existent Job (Error Case)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/non_existent_job_id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"non_existent_job_id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Basic Keyword Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/jobs/search/title?jobTitle=Developer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"jobs",
+						"search",
+						"title"
+					],
+					"query": [
+						{
+							"key": "jobTitle",
+							"value": "Developer"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search by Skills",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/jobs/search/skills?skill=java",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"jobs",
+						"search",
+						"skills"
+					],
+					"query": [
+						{
+							"key": "skill",
+							"value": "java"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Advanced Search with Multiple Filters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/search/advanced?companyName=Google&minSalary=50000&maxSalary=100000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"search",
+						"advanced"
+					],
+					"query": [
+						{
+							"key": "companyName",
+							"value": "Google"
+						},
+						{
+							"key": "minSalary",
+							"value": "50000"
+						},
+						{
+							"key": "maxSalary",
+							"value": "100000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sort by Date (Newest First)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/sorted/date?order=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"sorted",
+						"date"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sort by Salary (High to Low)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/api/jobs/sorted/salary?order=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"jobs",
+						"sorted",
+						"salary"
+					],
+					"query": [
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sort by Company Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/sorted/company",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"sorted",
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search and Sort Combined",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/jobs/search-sort?keyword=developer&sortBy=salary&sortOrder=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"jobs",
+						"search-sort"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "developer"
+						},
+						{
+							"key": "sortBy",
+							"value": "salary"
+						},
+						{
+							"key": "sortOrder",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
