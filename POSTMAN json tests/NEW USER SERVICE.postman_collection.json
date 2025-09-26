@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "28afc79c-d8ab-4988-aa2d-726cd622817c",
+		"name": "NEW USER SERVICE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33961185",
+		"_collection_link": "https://serverlabfinal.postman.co/workspace/HireNow~7741fc77-4704-4c01-87e9-a744d33521d5/collection/48053715-28afc79c-d8ab-4988-aa2d-726cd622817c?action=share&source=collection_link&creator=33961185"
+	},
+	"item": [
+		{
+			"name": "Invalid Phone Number",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishu\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1230\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valid Phone Number",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishu\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Username is required",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email Already Exists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishu\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unique Email",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishux\",\r\n    \"email\": \"john@exampled.com\",\r\n    \"password\": \"password1234@A\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Working Fine User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishuzzz\",\r\n    \"email\": \"john@example6495.com\",\r\n    \"password\": \"password1234@AB\",\r\n    \"roles\": [\"JOB_SEEKER\"], // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishu\",\r\n    \"email\": \"john@example69.com\",\r\n    \"password\": \"password123\",\r\n    \"role\": \"JOB_SEEKER\", // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by Username",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User by Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users/68d6d8d5809b1a56a442d2af",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"68d6d8d5809b1a56a442d2af"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Weak Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishuu\",\r\n    \"email\": \"john@example69420.com\",\r\n    \"password\": \"pa23\",\r\n    \"roles\": [\"JOB_SEEKER\"], // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Strong Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishuu\",\r\n    \"email\": \"john@example69420.com\",\r\n    \"password\": \"password123@A\",    //Special char + Capital\r\n    \"roles\": [\"JOB_SEEKER\"], // or \"JOB_HIRER\"\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Roles Working",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishsu\",\r\n    \"email\": \"johns@example69421.com\",\r\n    \"password\": \"password1234A@\", // or \"JOB_HIRER\"\r\n    \"roles\":[\"JOB_HIRER\"],\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No Roles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"username\":\"ishssu\",\r\n    \"email\": \"john@example69421s.com\",\r\n    \"password\": \"passwosrd1234A@\",\r\n    \"roles\": [\"\"], // GIVES ROLE MUST EITHER BE JOB SEEKER OR HIRER\r\n    \"phone\": \"1234567890\",\r\n    \"companyName\": \"Acme Corp\" // optional for JOB_SEEKER\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"ishuzz\",\r\n    \"password\":\"password1234@A\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/users/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
