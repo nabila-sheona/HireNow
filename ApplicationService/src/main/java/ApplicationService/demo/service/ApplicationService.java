@@ -19,14 +19,15 @@ public class ApplicationService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String USER_SERVICE_URL = "http://USER-SERVICE/api/users";
-    private static final String JOB_SERVICE_URL = "http://JOB-SERVICE/api/jobs";
+    // CORRECTED: Use service discovery names and proper endpoints
+    private static final String USER_SERVICE_URL = "http://UserService/api/users";
+    private static final String JOB_SERVICE_URL = "http://JobService/api/jobs";
 
     public JobApplication createApplication(JobApplication application) {
         // Validate required fields
         validateApplication(application);
 
-        // Check if user exists
+        // Check if user exists - FIXED: Call User Service correctly
         if (!userExists(application.getJobSeekerId())) {
             throw new RuntimeException("Job seeker not found with ID: " + application.getJobSeekerId());
         }
@@ -216,9 +217,9 @@ public class ApplicationService {
     }
 
     private void validateStatus(String status) {
-        if (!status.equalsIgnoreCase("PENDING") &&
-                !status.equalsIgnoreCase("ACCEPTED") &&
-                !status.equalsIgnoreCase("REJECTED")) {
+        if (!status.equalsIgnoreCase("PENDING")
+                && !status.equalsIgnoreCase("ACCEPTED")
+                && !status.equalsIgnoreCase("REJECTED")) {
             throw new IllegalArgumentException("Invalid status. Must be PENDING, ACCEPTED, or REJECTED");
         }
     }
@@ -234,7 +235,9 @@ public class ApplicationService {
             ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
-            throw new RuntimeException("Error checking user existence: " + e.getMessage());
+            // Log the error but don't throw - might be temporary service unavailability
+            System.err.println("Error checking user existence: " + e.getMessage());
+            return false; // Or handle differently based on requirements
         }
     }
 
@@ -244,7 +247,8 @@ public class ApplicationService {
             ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
-            throw new RuntimeException("Error checking job existence: " + e.getMessage());
+            System.err.println("Error checking job existence: " + e.getMessage());
+            return false;
         }
     }
 
