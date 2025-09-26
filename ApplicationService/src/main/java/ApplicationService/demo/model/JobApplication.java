@@ -19,10 +19,9 @@ public class JobApplication {
     private List<String> skills;
     private String experience;
     private String degree;
-    private String status; // PENDING, ACCEPTED, REJECTED
+    private String status; 
     private LocalDateTime applicationDate;
 
-    // Constructors
     public JobApplication() {
         this.status = "PENDING";
         this.applicationDate = LocalDateTime.now();
@@ -44,7 +43,6 @@ public class JobApplication {
         this.applicationDate = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

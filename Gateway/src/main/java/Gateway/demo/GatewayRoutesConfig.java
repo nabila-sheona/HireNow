@@ -11,7 +11,6 @@ import static org.springframework.web.servlet.function.RouterFunctions.route;
 @Configuration
 public class GatewayRoutesConfig {
 
-    // ApplicationService Route
     @Bean
     public RouterFunction<ServerResponse> applicationServiceRoute() {
         return route(
@@ -22,7 +21,6 @@ public class GatewayRoutesConfig {
         );
     }
 
-    // JobService Route
     @Bean
     public RouterFunction<ServerResponse> jobServiceRoute() {
         return route(
@@ -33,7 +31,6 @@ public class GatewayRoutesConfig {
         );
     }
 
-    // UserService Route
     @Bean
     public RouterFunction<ServerResponse> userServiceRoute() {
         return route(

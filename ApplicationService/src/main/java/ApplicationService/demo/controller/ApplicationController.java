@@ -319,7 +319,6 @@ public class ApplicationController {
         }
     }
 
-    // Diagnostic endpoints
     @GetMapping("/debug/user/{userId}")
     public ResponseEntity<?> debugUserCheck(@PathVariable String userId) {
         try {
@@ -347,11 +346,9 @@ public class ApplicationController {
     @GetMapping("/debug/services")
     public ResponseEntity<?> debugServices() {
         try {
-            // Test User Service
             String userServiceUrl = "http://UserService/api/users";
             restTemplate.getForObject(userServiceUrl, Object.class);
 
-            // Test Job Service
             String jobServiceUrl = "http://JobService/api/jobs";
             restTemplate.getForObject(jobServiceUrl, Object.class);
 
@@ -362,12 +359,10 @@ public class ApplicationController {
         }
     }
 
-    // Helper methods
     private ErrorResponse createErrorResponse(String error, String message) {
         return new ErrorResponse(error, message);
     }
 
-    // Response DTOs
     private static class ErrorResponse {
         private final String error;
         private final String message;

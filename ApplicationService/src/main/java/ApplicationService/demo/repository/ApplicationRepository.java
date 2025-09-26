@@ -19,7 +19,6 @@ public interface ApplicationRepository extends MongoRepository<JobApplication, S
     List<JobApplication> findByJobSeekerIdAndStatus(String jobSeekerId, String status);
     List<JobApplication> findByJobSeekerIdAndStatus(String jobSeekerId, String status, Sort sort);
 
-    // New methods for skill-based searching and sorting
     List<JobApplication> findBySkillsContainingIgnoreCase(String skill);
     List<JobApplication> findBySkillsContainingIgnoreCase(String skill, Sort sort);
 
