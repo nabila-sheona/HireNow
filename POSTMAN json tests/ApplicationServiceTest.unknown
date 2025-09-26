@@ -1,0 +1,645 @@
+{
+	"info": {
+		"_postman_id": "10aa6b13-f74d-40ad-b190-a2468f191115",
+		"name": "sda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33185456",
+		"_collection_link": "https://lively-crater-691596.postman.co/workspace/sda~e9ad013d-6bf6-4e78-a8dd-c46fe16fb959/collection/33185456-10aa6b13-f74d-40ad-b190-a2468f191115?action=share&source=collection_link&creator=33185456"
+	},
+	"item": [
+		{
+			"name": "Create Application",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jobId\": \"68b43b7b60f15763d927dc10\",\r\n    \"jobSeekerId\": \"68d6e7c1194c3e3e16481a7e\",\r\n    \"name\": \"ishu\",\r\n    \"phone\": \"+1234567890\",\r\n    \"email\": \"john@example69421.com\",\r\n    \"cvFileUrl\": \"https://example.com/cv.pdf\",\r\n    \"skills\": [\"Java\", \"Spring Boot\", \"MongoDB\"],\r\n    \"experience\": \"5 years\",\r\n    \"degree\": \"Bachelor's in Computer Science\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Applications (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications?sortBy=date&sortDirection=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "date"
+						},
+						{
+							"key": "sortDirection",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Applications",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Application by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/68d6b52b9d2e3562b9849813",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"68d6b52b9d2e3562b9849813"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Job ID (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/job/68b43b7b60f15763d927dc10?sortBy=name&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"job",
+						"68b43b7b60f15763d927dc10"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "name"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Job Seeker ID (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/jobseeker/68d6acb927f3952bc8ffd2b7?sortBy=applicationDate&sortDirection=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"jobseeker",
+						"68d6acb927f3952bc8ffd2b7"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "applicationDate"
+						},
+						{
+							"key": "sortDirection",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Job and Status (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/job/68b43b7b60f15763d927dc10/status/PENDING?sortBy=email&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"job",
+						"68b43b7b60f15763d927dc10",
+						"status",
+						"PENDING"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "email"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Job Seeker and Status (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/jobseeker/68d6acb927f3952bc8ffd2b7/status/PENDING?sortBy=date&sortDirection=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"jobseeker",
+						"68d6acb927f3952bc8ffd2b7",
+						"status",
+						"PENDING"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "date"
+						},
+						{
+							"key": "sortDirection",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Application Status",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/68d6b52b9d2e3562b9849813/status/ACCEPTED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"68d6b52b9d2e3562b9849813",
+						"status",
+						"ACCEPTED"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Application",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/68b44356cad51e172874cbad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"68b44356cad51e172874cbad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/job/68b43b7b60f15763d927dc10/count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"job",
+						"68b43b7b60f15763d927dc10",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Pending Applications Count for Job",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/job/68b43b7b60f15763d927dc10/pending/count",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"job",
+						"68b43b7b60f15763d927dc10",
+						"pending",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "can apply",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/can-apply?jobSeekerId=68d6acb927f3952bc8ffd2b7&jobId=68b43b7b60f15763d927dc10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"can-apply"
+					],
+					"query": [
+						{
+							"key": "jobSeekerId",
+							"value": "68d6acb927f3952bc8ffd2b7"
+						},
+						{
+							"key": "jobId",
+							"value": "68b43b7b60f15763d927dc10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Skill (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/skill/Java?sortBy=name&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"skill",
+						"Java"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "name"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Experience (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/experience/5 years?sortBy=applicationDate&sortDirection=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"experience",
+						"5 years"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "applicationDate"
+						},
+						{
+							"key": "sortDirection",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Applications by Degree (with sorting)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/degree/Bachelor?sortBy=email&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"degree",
+						"Bachelor"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "email"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Advanced Search with Multiple Criteria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications/search/advanced?skill=Java&experience=5&degree=Bachelor&status=PENDING&sortBy=skills&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications",
+						"search",
+						"advanced"
+					],
+					"query": [
+						{
+							"key": "skill",
+							"value": "Java"
+						},
+						{
+							"key": "experience",
+							"value": "5"
+						},
+						{
+							"key": "degree",
+							"value": "Bachelor"
+						},
+						{
+							"key": "status",
+							"value": "PENDING"
+						},
+						{
+							"key": "sortBy",
+							"value": "skills"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sort by Skills specifically",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications?sortBy=skills&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "skills"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sort by Degree specifically",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/applications?sortBy=degree&sortDirection=asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "degree"
+						},
+						{
+							"key": "sortDirection",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "email validation proof",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jobId\": \"68b43b7b60f15763d927dc10\",\r\n    \"jobSeekerId\": \"68d6acb927f3952bc8ffd2b7\",\r\n    \"name\": \"Test\",\r\n    \"phone\": \"+1234567890\",\r\n    \"email\": \"invalid-email\",\r\n    \"skills\": [\"Java\"],\r\n    \"experience\": \"2 years\",\r\n    \"degree\": \"Bachelor's\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "missing requirements",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"jobId\": \"68b43b7b60f15763d927dc10\",\r\n    \"jobSeekerId\": \"68d6acb927f3952bc8ffd2b7\",\r\n    \"name\": \"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/applications",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"applications"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
