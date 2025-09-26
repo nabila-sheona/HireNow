@@ -19,8 +19,217 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @Autowired
-    private RestTemplate restTemplate; // Add this injection
+    private RestTemplate restTemplate;
 
+    // Existing endpoints with sorting support
+    @GetMapping
+    public ResponseEntity<List<JobApplication>> getAllApplications(
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getAllApplications(sortBy, sortDirection);
+            } else {
+                applications = applicationService.getAllApplications();
+            }
+            return ResponseEntity.ok(applications);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/job/{jobId}")
+    public ResponseEntity<?> getApplicationsByJob(
+            @PathVariable String jobId,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByJob(jobId, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByJob(jobId);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/jobseeker/{jobSeekerId}")
+    public ResponseEntity<?> getApplicationsByJobSeeker(
+            @PathVariable String jobSeekerId,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByJobSeeker(jobSeekerId, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByJobSeeker(jobSeekerId);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/job/{jobId}/status/{status}")
+    public ResponseEntity<?> getApplicationsByJobAndStatus(
+            @PathVariable String jobId,
+            @PathVariable String status,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByJobAndStatus(jobId, status, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByJobAndStatus(jobId, status);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/jobseeker/{jobSeekerId}/status/{status}")
+    public ResponseEntity<?> getApplicationsByJobSeekerAndStatus(
+            @PathVariable String jobSeekerId,
+            @PathVariable String status,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByJobSeekerAndStatus(jobSeekerId, status, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByJobSeekerAndStatus(jobSeekerId, status);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // New endpoints for skills, experience, degree, and status-based sorting
+    @GetMapping("/skill/{skill}")
+    public ResponseEntity<?> getApplicationsBySkill(
+            @PathVariable String skill,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsBySkill(skill, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsBySkill(skill);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/experience/{experience}")
+    public ResponseEntity<?> getApplicationsByExperience(
+            @PathVariable String experience,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByExperience(experience, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByExperience(experience);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/degree/{degree}")
+    public ResponseEntity<?> getApplicationsByDegree(
+            @PathVariable String degree,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByDegree(degree, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByDegree(degree);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> getApplicationsByStatus(
+            @PathVariable String status,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications;
+            if (sortBy != null || sortDirection != null) {
+                applications = applicationService.getApplicationsByStatus(status, sortBy, sortDirection);
+            } else {
+                applications = applicationService.getApplicationsByStatus(status);
+            }
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/search/advanced")
+    public ResponseEntity<?> searchApplicationsAdvanced(
+            @RequestParam(required = false) String skill,
+            @RequestParam(required = false) String experience,
+            @RequestParam(required = false) String degree,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        try {
+            List<JobApplication> applications = applicationService.searchApplications(
+                    skill, experience, degree, status, sortBy, sortDirection);
+            return ResponseEntity.ok(applications);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Existing endpoints (unchanged)
     @PostMapping
     public ResponseEntity<?> createApplication(@RequestBody JobApplication application) {
         try {
@@ -36,16 +245,6 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<JobApplication>> getAllApplications() {
-        try {
-            List<JobApplication> applications = applicationService.getAllApplications();
-            return ResponseEntity.ok(applications);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getApplicationById(@PathVariable String id) {
         try {
@@ -54,62 +253,6 @@ public class ApplicationController {
                     .orElse(ResponseEntity.notFound().build());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/job/{jobId}")
-    public ResponseEntity<?> getApplicationsByJob(@PathVariable String jobId) {
-        try {
-            List<JobApplication> applications = applicationService.getApplicationsByJob(jobId);
-            return ResponseEntity.ok(applications);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/jobseeker/{jobSeekerId}")
-    public ResponseEntity<?> getApplicationsByJobSeeker(@PathVariable String jobSeekerId) {
-        try {
-            List<JobApplication> applications = applicationService.getApplicationsByJobSeeker(jobSeekerId);
-            return ResponseEntity.ok(applications);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/job/{jobId}/status/{status}")
-    public ResponseEntity<?> getApplicationsByJobAndStatus(@PathVariable String jobId, @PathVariable String status) {
-        try {
-            List<JobApplication> applications = applicationService.getApplicationsByJobAndStatus(jobId, status);
-            return ResponseEntity.ok(applications);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/jobseeker/{jobSeekerId}/status/{status}")
-    public ResponseEntity<?> getApplicationsByJobSeekerAndStatus(@PathVariable String jobSeekerId, @PathVariable String status) {
-        try {
-            List<JobApplication> applications = applicationService.getApplicationsByJobSeekerAndStatus(jobSeekerId, status);
-            return ResponseEntity.ok(applications);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Validation Error", e.getMessage()));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
