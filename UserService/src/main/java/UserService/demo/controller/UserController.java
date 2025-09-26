@@ -16,6 +16,7 @@ import java.util.Map;
 import UserService.demo.service.EmailAlreadyExistsException;
 import org.springframework.dao.DuplicateKeyException;
 import UserService.demo.service.PasswordStrengthException;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,10 +35,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
         // Business validation
-        if (!user.getRole().equals("JOB_SEEKER") && !user.getRole().equals("JOB_HIRER")) {
-            errors.put("role", "Role must be either JOB_SEEKER or JOB_HIRER");
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            errors.put("roles", "At least one role must be assigned (e.g., JOB_SEEKER or JOB_HIRER)");
+        } else if (!user.getRoles().contains("JOB_SEEKER") && !user.getRoles().contains("JOB_HIRER")) {
+            errors.put("roles", "Role must be either JOB_SEEKER or JOB_HIRER");
         }
-        if (user.getRole().equals("JOB_HIRER") && (user.getCompanyName() == null || user.getCompanyName().isEmpty())) {
+        if (user.getRoles() != null && user.getRoles().contains("JOB_HIRER") && (user.getCompanyName() == null || user.getCompanyName().isEmpty())) {
             errors.put("companyName", "Company name is required for JOB_HIRER");
         }
         if (!errors.isEmpty()) {
@@ -83,10 +86,12 @@ public class UserController {
             );
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
-        if (!userDetails.getRole().equals("JOB_SEEKER") && !userDetails.getRole().equals("JOB_HIRER")) {
-            errors.put("role", "Role must be either JOB_SEEKER or JOB_HIRER");
+        if (userDetails.getRoles() == null || userDetails.getRoles().isEmpty()) {
+            errors.put("roles", "At least one role must be assigned (e.g., JOB_SEEKER or JOB_HIRER)");
+        } else if (!userDetails.getRoles().contains("JOB_SEEKER") && !userDetails.getRoles().contains("JOB_HIRER")) {
+            errors.put("roles", "Role must be either JOB_SEEKER or JOB_HIRER");
         }
-        if (userDetails.getRole().equals("JOB_HIRER") && (userDetails.getCompanyName() == null || userDetails.getCompanyName().isEmpty())) {
+        if (userDetails.getRoles() != null && userDetails.getRoles().contains("JOB_HIRER") && (userDetails.getCompanyName() == null || userDetails.getCompanyName().isEmpty())) {
             errors.put("companyName", "Company name is required for JOB_HIRER");
         }
         if (!errors.isEmpty()) {
@@ -107,6 +112,26 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/roles")
+    public ResponseEntity<?> assignRole(@PathVariable String id, @RequestBody String role) {
+        userService.assignRole(id, role);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}/roles/{role}")
+    public ResponseEntity<?> removeRole(@PathVariable String id, @PathVariable String role) {
+        userService.removeRole(id, role);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.username")
+    @GetMapping("/{id}/roles")
+    public ResponseEntity<?> getUserRoles(@PathVariable String id) {
+        return ResponseEntity.ok(userService.getUserRoles(id));
     }
 
     @DeleteMapping("/{id}")

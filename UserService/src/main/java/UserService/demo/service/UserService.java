@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import UserService.demo.service.PasswordStrengthException;
+import java.util.Set;
+import java.util.HashSet;
 
 @Service
 public class UserService {
@@ -50,6 +52,12 @@ public class UserService {
         }
         validatePasswordStrength(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Assign default role if none provided
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            Set<String> defaultRoles = new HashSet<>();
+            defaultRoles.add("JOB_SEEKER");
+            user.setRoles(defaultRoles);
+        }
         return userRepository.save(user);
     }
 
@@ -75,7 +83,6 @@ public class UserService {
         }
         user.setUsername(userDetails.getUsername());
         user.setEmail(userDetails.getEmail());
-        user.setRole(userDetails.getRole());
         user.setPhone(userDetails.getPhone());
         user.setCompanyName(userDetails.getCompanyName());
         // Only update password if a new one is provided
@@ -83,11 +90,32 @@ public class UserService {
             validatePasswordStrength(userDetails.getPassword());
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         }
+        // Update roles if provided
+        if (userDetails.getRoles() != null && !userDetails.getRoles().isEmpty()) {
+            user.setRoles(userDetails.getRoles());
+        }
         return userRepository.save(user);
     }
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
+    }
+
+    public void assignRole(String id, String role) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
+    public void removeRole(String id, String role) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.getRoles().remove(role);
+        userRepository.save(user);
+    }
+
+    public Set<String> getUserRoles(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getRoles();
     }
 }
 

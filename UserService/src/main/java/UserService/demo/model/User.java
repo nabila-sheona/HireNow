@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 @Document(collection = "users")
 public class User {
@@ -17,8 +19,7 @@ public class User {
     private String email;
     @NotBlank(message = "Password is required")
     private String password;
-    @NotBlank(message = "Role is required")
-    private String role; // JOB_SEEKER or JOB_HIRER
+    private Set<String> roles = new HashSet<>();
     @Pattern(regexp = "^$|^[0-9]{10,15}$", message = "Invalid phone number")
     private String phone;
     private String companyName;
@@ -26,11 +27,11 @@ public class User {
     // Constructors
     public User() {}
 
-    public User(String username, String email, String password, String role, String phone, String companyName) {
+    public User(String username, String email, String password, Set<String> roles, String phone, String companyName) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.phone = phone;
         this.companyName = companyName;
     }
@@ -44,8 +45,8 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) { this.roles = roles; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
     public String getCompanyName() { return companyName; }
