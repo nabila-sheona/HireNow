@@ -21,10 +21,8 @@ public class JobService {
     private RestTemplate restTemplate;
 
     public Job createJob(Job job) {
-        // Validate user exists and is a job hirer
         validateHirer(job.getHirerId());
 
-        // Validate job data
         validateJobData(job);
 
         return jobRepository.save(job);
@@ -70,10 +68,8 @@ public class JobService {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
 
-        // Validate user exists and is a job hirer
         validateHirer(jobDetails.getHirerId());
 
-        // Validate job data
         validateJobData(jobDetails);
 
         job.setCompanyName(jobDetails.getCompanyName());
@@ -106,7 +102,6 @@ public class JobService {
         }
 
         try {
-            // Call User Service to validate hirer
             String userServiceUrl = "http://UserService/api/users/" + hirerId;
             ResponseEntity<UserResponse> response = restTemplate.getForEntity(userServiceUrl, UserResponse.class);
 
@@ -166,7 +161,6 @@ public class JobService {
                 "HYBRID".equalsIgnoreCase(preference);
     }
 
-    // Inner class for user response
     public static class UserResponse {
         private String id;
         private String username;
@@ -175,7 +169,6 @@ public class JobService {
         private String phone;
         private String companyName;
 
-        // Getters and setters
         public String getId() {
             return id;
         }

@@ -141,7 +141,6 @@ public class JobController {
         }
     }
 
-    // Error response class
     public static class ErrorResponse {
         private String error;
         private String message;
@@ -153,7 +152,6 @@ public class JobController {
             this.timestamp = System.currentTimeMillis();
         }
 
-        // Getters and setters
         public String getError() {
             return error;
         }

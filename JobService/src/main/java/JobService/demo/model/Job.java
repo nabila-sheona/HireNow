@@ -12,9 +12,9 @@ public class Job {
     private String companyName;
     private String jobTitle;
     private Double expectedSalary;
-    private String preference; // REMOTE, ONSITE, HYBRID
+    private String preference; 
     private List<String> requiredSkills;
-    private String experience; // "2 years" or "Flexible"
+    private String experience; 
     private String workingHours;
     private String prerequisites;
     private String hirerId;
