@@ -3,11 +3,12 @@ package ApplicationService.demo.service;
 import ApplicationService.demo.model.JobApplication;
 import ApplicationService.demo.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.data.domain.Sort;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,11 @@ public class ApplicationService {
         return applicationRepository.findAll();
     }
 
+    public List<JobApplication> getAllApplications(String sortBy, String sortDirection) {
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findAll(sort);
+    }
+
     public Optional<JobApplication> getApplicationById(String id) {
         if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("Application ID cannot be null or empty");
@@ -77,6 +83,20 @@ public class ApplicationService {
         return applicationRepository.findByJobId(jobId);
     }
 
+    public List<JobApplication> getApplicationsByJob(String jobId, String sortBy, String sortDirection) {
+        if (jobId == null || jobId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Job ID cannot be null or empty");
+        }
+
+        // Verify job exists
+        if (!jobExists(jobId)) {
+            throw new RuntimeException("Job not found with ID: " + jobId);
+        }
+
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByJobId(jobId, sort);
+    }
+
     public List<JobApplication> getApplicationsByJobSeeker(String jobSeekerId) {
         if (jobSeekerId == null || jobSeekerId.trim().isEmpty()) {
             throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
@@ -88,6 +108,20 @@ public class ApplicationService {
         }
 
         return applicationRepository.findByJobSeekerId(jobSeekerId);
+    }
+
+    public List<JobApplication> getApplicationsByJobSeeker(String jobSeekerId, String sortBy, String sortDirection) {
+        if (jobSeekerId == null || jobSeekerId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
+        }
+
+        // Verify user exists
+        if (!userExists(jobSeekerId)) {
+            throw new RuntimeException("Job seeker not found with ID: " + jobSeekerId);
+        }
+
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByJobSeekerId(jobSeekerId, sort);
     }
 
     public List<JobApplication> getApplicationsByJobAndStatus(String jobId, String status) {
@@ -108,6 +142,25 @@ public class ApplicationService {
         return applicationRepository.findByJobIdAndStatus(jobId, status);
     }
 
+    public List<JobApplication> getApplicationsByJobAndStatus(String jobId, String status, String sortBy, String sortDirection) {
+        if (jobId == null || jobId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Job ID cannot be null or empty");
+        }
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+
+        validateStatus(status);
+
+        // Verify job exists
+        if (!jobExists(jobId)) {
+            throw new RuntimeException("Job not found with ID: " + jobId);
+        }
+
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByJobIdAndStatus(jobId, status, sort);
+    }
+
     public List<JobApplication> getApplicationsByJobSeekerAndStatus(String jobSeekerId, String status) {
         if (jobSeekerId == null || jobSeekerId.trim().isEmpty()) {
             throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
@@ -124,6 +177,25 @@ public class ApplicationService {
         }
 
         return applicationRepository.findByJobSeekerIdAndStatus(jobSeekerId, status);
+    }
+
+    public List<JobApplication> getApplicationsByJobSeekerAndStatus(String jobSeekerId, String status, String sortBy, String sortDirection) {
+        if (jobSeekerId == null || jobSeekerId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
+        }
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+
+        validateStatus(status);
+
+        // Verify user exists
+        if (!userExists(jobSeekerId)) {
+            throw new RuntimeException("Job seeker not found with ID: " + jobSeekerId);
+        }
+
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByJobSeekerIdAndStatus(jobSeekerId, status, sort);
     }
 
     public JobApplication updateApplicationStatus(String id, String status) {
@@ -159,6 +231,211 @@ public class ApplicationService {
 
         applicationRepository.deleteById(id);
     }
+
+    // Sorting helper method
+
+    public List<JobApplication> getApplicationsBySkill(String skill) {
+        if (skill == null || skill.trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill cannot be null or empty");
+        }
+        return applicationRepository.findBySkillsContainingIgnoreCase(skill);
+    }
+
+    public List<JobApplication> getApplicationsBySkill(String skill, String sortBy, String sortDirection) {
+        if (skill == null || skill.trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill cannot be null or empty");
+        }
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findBySkillsContainingIgnoreCase(skill, sort);
+    }
+
+    public List<JobApplication> getApplicationsByExperience(String experience) {
+        if (experience == null || experience.trim().isEmpty()) {
+            throw new IllegalArgumentException("Experience cannot be null or empty");
+        }
+        return applicationRepository.findByExperienceContainingIgnoreCase(experience);
+    }
+
+    public List<JobApplication> getApplicationsByExperience(String experience, String sortBy, String sortDirection) {
+        if (experience == null || experience.trim().isEmpty()) {
+            throw new IllegalArgumentException("Experience cannot be null or empty");
+        }
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByExperienceContainingIgnoreCase(experience, sort);
+    }
+
+    public List<JobApplication> getApplicationsByDegree(String degree) {
+        if (degree == null || degree.trim().isEmpty()) {
+            throw new IllegalArgumentException("Degree cannot be null or empty");
+        }
+        return applicationRepository.findByDegreeContainingIgnoreCase(degree);
+    }
+
+    public List<JobApplication> getApplicationsByDegree(String degree, String sortBy, String sortDirection) {
+        if (degree == null || degree.trim().isEmpty()) {
+            throw new IllegalArgumentException("Degree cannot be null or empty");
+        }
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByDegreeContainingIgnoreCase(degree, sort);
+    }
+
+    public List<JobApplication> getApplicationsByStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+        validateStatus(status);
+        return applicationRepository.findByStatus(status.toUpperCase());
+    }
+
+    public List<JobApplication> getApplicationsByStatus(String status, String sortBy, String sortDirection) {
+        if (status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("Status cannot be null or empty");
+        }
+        validateStatus(status);
+        Sort sort = createSort(sortBy, sortDirection);
+        return applicationRepository.findByStatus(status.toUpperCase(), sort);
+    }
+
+    // Advanced search with multiple criteria
+    public List<JobApplication> searchApplications(String skill, String experience, String degree, String status, String sortBy, String sortDirection) {
+        // Start with all applications
+        List<JobApplication> applications = applicationRepository.findAll();
+
+        // Apply filters
+        if (skill != null && !skill.trim().isEmpty()) {
+            applications = applications.stream()
+                    .filter(app -> app.getSkills() != null &&
+                            app.getSkills().stream()
+                                    .anyMatch(s -> s.toLowerCase().contains(skill.toLowerCase())))
+                    .toList();
+        }
+
+        if (experience != null && !experience.trim().isEmpty()) {
+            applications = applications.stream()
+                    .filter(app -> app.getExperience() != null &&
+                            app.getExperience().toLowerCase().contains(experience.toLowerCase()))
+                    .toList();
+        }
+
+        if (degree != null && !degree.trim().isEmpty()) {
+            applications = applications.stream()
+                    .filter(app -> app.getDegree() != null &&
+                            app.getDegree().toLowerCase().contains(degree.toLowerCase()))
+                    .toList();
+        }
+
+        if (status != null && !status.trim().isEmpty()) {
+            validateStatus(status);
+            applications = applications.stream()
+                    .filter(app -> app.getStatus() != null &&
+                            app.getStatus().equalsIgnoreCase(status))
+                    .toList();
+        }
+
+        // Apply sorting
+        return sortApplications(applications, sortBy, sortDirection);
+    }
+
+    // Enhanced sorting helper method
+    private Sort createSort(String sortBy, String sortDirection) {
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            sortBy = "applicationDate"; // Default sort field
+        }
+
+        if (sortDirection == null || sortDirection.trim().isEmpty()) {
+            sortDirection = "desc"; // Default sort direction
+        }
+
+        // Validate and map field names
+        String validatedSortBy = validateAndMapSortField(sortBy);
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("asc") ?
+                Sort.Direction.ASC : Sort.Direction.DESC;
+
+        return Sort.by(direction, validatedSortBy);
+    }
+
+    private String validateAndMapSortField(String sortBy) {
+        // Map request field names to entity field names
+        switch (sortBy.toLowerCase()) {
+            case "date":
+            case "applicationdate":
+                return "applicationDate";
+            case "name":
+                return "name";
+            case "email":
+                return "email";
+            case "status":
+                return "status";
+            case "experience":
+                return "experience";
+            case "degree":
+                return "degree";
+            case "jobid":
+                return "jobId";
+            case "jobseekerid":
+                return "jobSeekerId";
+            case "skills":
+                return "skills"; // Now supported
+            case "phone":
+                return "phone";
+            default:
+                return "applicationDate"; // Default field
+        }
+    }
+
+    // Manual sorting method for advanced searches
+    private List<JobApplication> sortApplications(List<JobApplication> applications, String sortBy, String sortDirection) {
+        if (sortBy == null && sortDirection == null) {
+            return applications;
+        }
+
+        String validatedSortBy = validateAndMapSortField(sortBy != null ? sortBy : "applicationDate");
+        boolean ascending = !"desc".equalsIgnoreCase(sortDirection);
+
+        List<JobApplication> sortedApplications = applications.stream()
+                .sorted((a1, a2) -> {
+                    int result = 0;
+                    switch (validatedSortBy.toLowerCase()) {
+                        case "applicationdate":
+                            result = a1.getApplicationDate().compareTo(a2.getApplicationDate());
+                            break;
+                        case "name":
+                            result = a1.getName().compareToIgnoreCase(a2.getName());
+                            break;
+                        case "email":
+                            result = a1.getEmail().compareToIgnoreCase(a2.getEmail());
+                            break;
+                        case "status":
+                            result = a1.getStatus().compareToIgnoreCase(a2.getStatus());
+                            break;
+                        case "experience":
+                            result = a1.getExperience().compareToIgnoreCase(a2.getExperience());
+                            break;
+                        case "degree":
+                            result = a1.getDegree().compareToIgnoreCase(a2.getDegree());
+                            break;
+                        case "skills":
+                            // Sort by first skill alphabetically
+                            String skills1 = a1.getSkills() != null && !a1.getSkills().isEmpty() ?
+                                    a1.getSkills().get(0) : "";
+                            String skills2 = a2.getSkills() != null && !a2.getSkills().isEmpty() ?
+                                    a2.getSkills().get(0) : "";
+                            result = skills1.compareToIgnoreCase(skills2);
+                            break;
+                        case "phone":
+                            result = a1.getPhone().compareToIgnoreCase(a2.getPhone());
+                            break;
+                        default:
+                            result = a1.getApplicationDate().compareTo(a2.getApplicationDate());
+                    }
+                    return ascending ? result : -result;
+                })
+                .toList();
+
+        return sortedApplications;
+    }
+
 
     // Validation methods
     private void validateApplication(JobApplication application) {
@@ -310,4 +587,6 @@ public class ApplicationService {
     public boolean canUserApply(String jobSeekerId, String jobId) {
         return userExists(jobSeekerId) && jobExists(jobId) && !hasAlreadyApplied(jobSeekerId, jobId);
     }
+
+
 }
