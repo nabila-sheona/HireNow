@@ -3,6 +3,7 @@ package ApplicationService.demo.service;
 import ApplicationService.demo.model.JobApplication;
 import ApplicationService.demo.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,7 +20,6 @@ public class ApplicationService {
     @Autowired
     private RestTemplate restTemplate;
 
-    // CORRECTED: Use service discovery names and proper endpoints
     private static final String USER_SERVICE_URL = "http://UserService/api/users";
     private static final String JOB_SERVICE_URL = "http://JobService/api/jobs";
 
@@ -27,10 +27,15 @@ public class ApplicationService {
         // Validate required fields
         validateApplication(application);
 
-        // Check if user exists - FIXED: Call User Service correctly
+        System.out.println("DEBUG: Validating user with ID: " + application.getJobSeekerId());
+
+        // Check if user exists - with better error handling
         if (!userExists(application.getJobSeekerId())) {
-            throw new RuntimeException("Job seeker not found with ID: " + application.getJobSeekerId());
+            throw new RuntimeException("Job seeker not found with ID: " + application.getJobSeekerId() +
+                    ". Please ensure the user exists and has proper roles assigned.");
         }
+
+        System.out.println("DEBUG: Validating job with ID: " + application.getJobId());
 
         // Check if job exists
         if (!jobExists(application.getJobId())) {
@@ -228,26 +233,42 @@ public class ApplicationService {
         return "ACCEPTED".equalsIgnoreCase(status) || "REJECTED".equalsIgnoreCase(status);
     }
 
-    // External service calls
+    // External service calls - IMPROVED with better error handling
     private boolean userExists(String userId) {
         try {
             String url = USER_SERVICE_URL + "/" + userId;
+            System.out.println("DEBUG: Calling User Service URL: " + url);
+
             ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
-            return response.getStatusCode().is2xxSuccessful();
+            System.out.println("DEBUG: User Service response status: " + response.getStatusCode());
+
+            if (response.getStatusCode() == HttpStatus.OK) {
+                System.out.println("DEBUG: User validation successful for ID: " + userId);
+                return true;
+            } else {
+                System.out.println("DEBUG: User validation failed with status: " + response.getStatusCode());
+                return false;
+            }
         } catch (Exception e) {
-            // Log the error but don't throw - might be temporary service unavailability
-            System.err.println("Error checking user existence: " + e.getMessage());
-            return false; // Or handle differently based on requirements
+            System.err.println("ERROR checking user existence for ID " + userId + ": " + e.getMessage());
+            // Log the full exception for debugging
+            e.printStackTrace();
+            return false;
         }
     }
 
     private boolean jobExists(String jobId) {
         try {
             String url = JOB_SERVICE_URL + "/" + jobId;
+            System.out.println("DEBUG: Calling Job Service URL: " + url);
+
             ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
+            System.out.println("DEBUG: Job Service response status: " + response.getStatusCode());
+
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
             System.err.println("Error checking job existence: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
