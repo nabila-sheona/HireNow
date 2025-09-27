@@ -25,12 +25,10 @@ public class ApplicationService {
     private static final String JOB_SERVICE_URL = "http://JobService/api/jobs";
 
     public JobApplication createApplication(JobApplication application) {
-        // Validate required fields
         validateApplication(application);
 
         System.out.println("DEBUG: Validating user with ID: " + application.getJobSeekerId());
 
-        // Check if user exists - with better error handling
         if (!userExists(application.getJobSeekerId())) {
             throw new RuntimeException("Job seeker not found with ID: " + application.getJobSeekerId() +
                     ". Please ensure the user exists and has proper roles assigned.");
@@ -38,17 +36,14 @@ public class ApplicationService {
 
         System.out.println("DEBUG: Validating job with ID: " + application.getJobId());
 
-        // Check if job exists
         if (!jobExists(application.getJobId())) {
             throw new RuntimeException("Job not found with ID: " + application.getJobId());
         }
 
-        // Check if user has already applied for this job
         if (hasAlreadyApplied(application.getJobSeekerId(), application.getJobId())) {
             throw new RuntimeException("User has already applied for this job");
         }
 
-        // Validate application meets job requirements (basic validation)
         validateApplicationRequirements(application);
 
         return applicationRepository.save(application);
@@ -75,7 +70,6 @@ public class ApplicationService {
             throw new IllegalArgumentException("Job ID cannot be null or empty");
         }
 
-        // Verify job exists
         if (!jobExists(jobId)) {
             throw new RuntimeException("Job not found with ID: " + jobId);
         }
@@ -88,7 +82,6 @@ public class ApplicationService {
             throw new IllegalArgumentException("Job ID cannot be null or empty");
         }
 
-        // Verify job exists
         if (!jobExists(jobId)) {
             throw new RuntimeException("Job not found with ID: " + jobId);
         }
@@ -102,7 +95,6 @@ public class ApplicationService {
             throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
         }
 
-        // Verify user exists
         if (!userExists(jobSeekerId)) {
             throw new RuntimeException("Job seeker not found with ID: " + jobSeekerId);
         }
@@ -115,7 +107,6 @@ public class ApplicationService {
             throw new IllegalArgumentException("Job seeker ID cannot be null or empty");
         }
 
-        // Verify user exists
         if (!userExists(jobSeekerId)) {
             throw new RuntimeException("Job seeker not found with ID: " + jobSeekerId);
         }
@@ -134,7 +125,6 @@ public class ApplicationService {
 
         validateStatus(status);
 
-        // Verify job exists
         if (!jobExists(jobId)) {
             throw new RuntimeException("Job not found with ID: " + jobId);
         }
@@ -152,7 +142,6 @@ public class ApplicationService {
 
         validateStatus(status);
 
-        // Verify job exists
         if (!jobExists(jobId)) {
             throw new RuntimeException("Job not found with ID: " + jobId);
         }
@@ -339,11 +328,11 @@ public class ApplicationService {
     // Enhanced sorting helper method
     private Sort createSort(String sortBy, String sortDirection) {
         if (sortBy == null || sortBy.trim().isEmpty()) {
-            sortBy = "applicationDate"; // Default sort field
+            sortBy = "applicationDate"; 
         }
 
         if (sortDirection == null || sortDirection.trim().isEmpty()) {
-            sortDirection = "desc"; // Default sort direction
+            sortDirection = "desc";
         }
 
         // Validate and map field names
@@ -376,11 +365,11 @@ public class ApplicationService {
             case "jobseekerid":
                 return "jobSeekerId";
             case "skills":
-                return "skills"; // Now supported
+                return "skills";
             case "phone":
                 return "phone";
             default:
-                return "applicationDate"; // Default field
+                return "applicationDate"; 
         }
     }
 

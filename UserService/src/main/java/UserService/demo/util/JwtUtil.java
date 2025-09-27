@@ -12,7 +12,7 @@ import javax.crypto.SecretKey;
 @Component
 public class JwtUtil {
     private final String SECRET_KEY = "ReplaceThisWithASecretKeyOfAtLeast32Characters!";
-    private final long JWT_EXPIRATION = 1000 * 60 * 60 * 10; // 10 hours
+    private final long JWT_EXPIRATION = 1000 * 60 * 60 * 10;
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());

@@ -18,7 +18,6 @@ public class JobController {
     @Autowired
     private JobService jobService;
 
-    // === EXISTING ENDPOINTS ===
     @PostMapping
     public ResponseEntity<?> createJob(@RequestBody Job job) {
         try {
@@ -144,7 +143,6 @@ public class JobController {
         }
     }
 
-    // === NEW SEARCH AND SORT ENDPOINTS ===
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keyword) {
         try {
