@@ -110,7 +110,7 @@ public class JobService {
             }
 
             UserResponse user = response.getBody();
-            if (user == null || !"JOB_HIRER".equalsIgnoreCase(user.getRole())) {
+            if (user == null || user.getRoles() == null || !user.getRoles().contains("JOB_HIRER")) {
                 throw new RuntimeException("User is not authorized to post jobs. Only JOB_HIRER role allowed.");
             }
 
@@ -274,7 +274,7 @@ public class JobService {
         private String id;
         private String username;
         private String email;
-        private String role;
+        private java.util.Set<String> roles;
         private String phone;
         private String companyName;
 
@@ -284,8 +284,8 @@ public class JobService {
         public void setUsername(String username) { this.username = username; }
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
-        public String getRole() { return role; }
-        public void setRole(String role) { this.role = role; }
+        public java.util.Set<String> getRoles() { return roles; }
+        public void setRoles(java.util.Set<String> roles) { this.roles = roles; }
         public String getPhone() { return phone; }
         public void setPhone(String phone) { this.phone = phone; }
         public String getCompanyName() { return companyName; }
